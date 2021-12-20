@@ -1,0 +1,800 @@
+import winsound 
+from sys import exit, platform
+import time 
+import os
+from time import sleep
+
+
+'''
+    ,******************************************************************************************************************************,
+    *    This is a code in python for my own version of The tic tac toe game.The object of Tic Tac Toe is to get three in a row.    *
+    *  You play on a three by three game board.                                                                                     *
+    *  The first player is known as X and the second is O.                                                                          *
+    *  Players alternate placing Xs and Os on the game board  until either oppent has three in a row                                *
+    *  or all nine squares are filled.                                                                                              *
+    *  X always goes first,and in the event that no one has three in a row, the stalemate is called a cat game."""                  *
+      ******************************************************************************************************************************
+      
+'''
+
+
+                                            # <<<< start of code >>>>
+
+# variable to keep track if the game still ongoing
+game_on = True
+
+# variable for checking if players already selected the symbole to play with
+player_selected = False
+
+# a diictionary to put 'X' & 'O' in to show on the board
+a = {1:' ',2:' ',3:' ',4:' ',5:' ',6:' ',7:' ',8:' ',9:' '}
+
+winner = ''
+
+#  designing animation function
+################################
+
+''' goes here later '''
+
+
+###############################
+
+
+#I nitializer function:
+def initializer():
+    
+    global player_selected
+    global a
+    # to use native use linux os or win beep sound separately:
+    beeper = platform_checker()
+    global used_cell_numbers
+    global game_on
+    a = a.fromkeys(a,' ')
+    
+    game_on = True
+    player_selected = False
+    used_cell_numbers *= 0
+    clear()
+
+    
+    
+def platform_checker():
+    if platform == 'linux' or platform == 'linux2':
+        #os is linux
+        return 1
+
+    elif platform == 'darwin':
+        #platform is os x
+        return 2
+    
+    elif platform == 'win32':
+        # platform is windows
+        return 3
+         
+    
+
+  
+    
+# using windows / OS soundsto build bgm functions:
+#######################
+
+def oppen_bgm():
+    winsound.Beep(390, 899) # frequency, duration
+    winsound.Beep(230, 122)
+    time.sleep(.20)       # in seconds (0.25 is 250ms)
+    winsound.Beep(260, 150)
+    time.sleep(0.25)
+    winsound.Beep(400, 150)
+    time.sleep(0.25)
+    winsound.Beep(600, 150)
+    time.sleep(0.25)
+    winsound.Beep(440, 150)
+    time.sleep(0.25)
+    winsound.Beep(600, 1220)
+
+def end_bgm():
+    winsound.Beep(240, 220)
+    time.sleep(0.15)
+    winsound.Beep(300, 330)
+    time.sleep(0.15)
+    winsound.Beep(240, 590)
+    winsound.Beep(240, 190)
+    winsound.Beep(240, 190)
+    winsound.Beep(200, 1000)
+    winsound.Beep(300, 330)
+
+def win_os_beep():
+    winsound.Beep(533, 300)
+    time.sleep(0.00000000000001)
+    winsound.Beep(522, 400)
+
+# linux beeping function 
+def linux_beep():
+    print("\a")
+
+
+
+# Game's UI 
+
+def disp():
+    
+    print('          \n')
+    print('                        *********  Tic Tac Toe  ********     ')
+    print('          ')
+   
+    print('                        ----------- ----------- -----------     ')
+    print(f'                      #           #           #           #    ')
+    print(f'                      #      {a[7]}    #      {a[8]}    #     {a[9]}     #    ')
+    print(f'                      #           #           #           #    ')
+    print('                       ----------- ----------- -----------      ')
+    print(f'                      #           #           #           #    ')
+    print(f'                      #      {a[4]}    #      {a[5]}    #      {a[6]}    #    ')
+    print(f'                      #           #           #           #    ')
+    print('                       ----------- ----------- -----------      ')
+    print(f'                      #           #           #           #    ')
+    print(f'                      #      {a[1]}    #      {a[2]}    #      {a[3]}    #    ')
+    print(f'                      #           #           #           #    ')
+    print('                       ----------- ----------- -----------      ')
+    print('          \n')    
+    print('  ###################### Crazy Games All right reserved ######################     ')
+    print('          \n')
+    print('           \n     ')
+  
+
+
+
+  
+ #  here goes game logic code       #
+####################################    
+    
+def winner_checker():
+    
+    global used_cell_numbers
+    global winner
+    global game_on
+    
+    
+    # check for all cases when player wins:
+    for k in ('O','X'):
+        if (
+            ( a[1] == a[2] == a[3] == k ) or \
+            ( a[4] == a[5] == a[6] == k ) or \
+            ( a[7] == a[8] == a[9] == k ) or \
+            ( a[1] == a[5] == a[9] == k ) or \
+            ( a[7] == a[5] == a[3] == k ) or \
+            ( a[2] == a[5] == a[8] == k ) or \
+            ( a[1] == a[4] == a[7] == k ) or \
+            ( a[3] == a[6] == a[9] == k )
+        ) :
+            # condition is true and the game then ends:
+            
+            print('     _____________________________________________________________________________________________________\n\n')
+            print('                                                  Game Over\n')
+            print('     ____________________________________________________________________________________________________\n')
+            game_on = False
+            winner = k     
+      
+        elif len (used_cell_numbers) == 8:
+            game_on = False
+            winner = 'Tie'   
+    
+
+def cell_num():
+      
+    while True:
+    
+#       beep()
+        
+        choice = input("    choose cell's number:\n\n          -------\n          "
+                           "|7|8|9|\n          -------\n          |4|5|6|\n          "
+                            "-------\n          |1|2|3|\n          -------\n\n\n:")
+
+        while choice.isdigit() :
+            
+            choice = int(choice)
+            if choice in range(1,10):
+                return choice
+                break
+                          
+            else:
+                print('                ----------- ----------- ----------------------------      ')
+                print("                Oops ! wrong number! need glaces ? okay try agin !!")
+                print('                ---*-----------*-----------*-----------*------------      ')
+                return 'ExeptionError 1'
+                beep()
+                continue
+
+        else:
+#             beep()
+            print("Please enter only numbers...\n,"
+                  "don't play The smart!! ")
+            #clearing screen function maybe here
+            return 'ExeptionError 2'
+            break
+            
+            
+            
+
+def player_select():
+   
+    while 1:
+    
+        turn = {'player1':'','player2':''}
+        # first time UI prompt
+        print('                ----------- ----------- ---------------------------- \n\n     ')
+        print(" Let's Play!\n\n"
+                      "               choose 'O' for: PLAYER I or 'X' for: PLAYER II: \n\n")
+
+        print("    ######################################            ######################################   ")
+        print("    #       X :   PLAYER I                #           #         O :    PLAYER II           #   ")
+        print("    ######################################            ######################################   ")
+
+        selection = (input("")).upper()
+               
+        if selection == 'O':
+            turn.update({'player1' : selection, 'player2' : 'X'})
+            return turn
+            break
+
+        elif selection == 'X':
+            turn.update({'player1' : selection, 'player2' : 'O'})
+            return turn
+            break
+
+        else:
+#             beep()
+            print("    \n\n\n" 
+                  "     **\n"
+                  "      Only O or X is accepted, let's try again !\n"
+                  "           -    -\n"
+                  "    \n  ") 
+        
+
+
+# defining function to clear screen:
+clear = lambda:os.system('cls')
+
+
+
+# declaring a  list to check for used cell numbers
+used_cell_numbers = []
+
+
+def replay():
+    
+    print('\n\n                *=================       The GAME is OVER        ======================*        \n\n\n\n') 
+    
+
+    
+    print("  ######################################                 ######################################   ")
+    print("  #                                    #                 #                                    #   ")
+    print("  #     Y/yes :   Play Again !!        #                 #     N/ No :   Maybe Later .        #   ")
+    print("  #                                    #                 #                                    #   ")
+    print("  ######################################                 ######################################   ")
+
+
+    print('\n\n\n                   *========================*********=========================*        ')         
+    print('          \n')    
+    print('            ###################### Crazy Games All right reserved ######################     ')
+    print('          ')
+    print('                           ********* Coded By HAKIM S.D  ********     ')
+    
+       
+    while 1:
+        
+        u_responce = (input( "play again?: ")).upper()
+        
+        if u_responce in ('Y','YES'):
+            main()
+            break
+            
+        elif u_responce in ('N','NO'):
+            print('                ----------- ----------- ----------------------------  \n\n    ')
+            print(" ............................SEE YOU LATER THEN !!")
+            print('                ----------- ----------- ---------------------------- \n\n     ')
+            break
+            
+        else:
+            print(" sorry i don't hear you ?? say it again : ")
+            continue
+
+            
+
+# Main function:
+
+def main():
+    
+    # starting the game   
+    oppen_bgm()
+    initializer()
+    sfx = platform_checker()
+    p = player_select()
+    cycle_counter = 0
+           
+    def cycler():
+        global plays_counter
+        global cycle_counter
+        c = cell_num()
+        
+        while True:
+
+            if c in used_cell_numbers:
+                # print(f'cell number is {c}')
+                print('                ----------- ----------- ----------------------------      ')
+                print("                   Cell already token !! choose another number .")
+                print('                ----------- ----------- ----------------------------      ')
+                break
+
+            else:
+                used_cell_numbers.append(c)
+                plays_counter+= 1
+                break
+
+                
+                #print(f'cell number is {c}')
+                break
+
+                
+        # switching turn for player 1 & 2:
+        
+        while cycle_counter == 1:
+            
+            print(" ...........................\n")
+            print("player 1's turn! \n ")
+            print(" ...........................\n")
+            a[c] = p['player1']
+            cycle_counter = 0
+            break
+
+        else:
+            
+            print("player 2 's turn!")
+            a[c] = p['player2']
+            cycle_counter = 1
+    
+    
+
+    # switching beeper for os:
+    if sfx == 3:
+        beep =  win_os_beep()
+        
+    elif sfx == 1:
+        beep = linux_beep()
+   
+
+   # checking for game's winner:    
+    while game_on:
+        
+        cycler()   
+        disp()
+        winner_checker()
+        
+    else:
+       # declaring the winner
+        end_bgm()
+        
+        if winner in('O', "X") :
+            raw_rslt  = list( player for player in p if p[player] ==  winner)
+            result = raw_rslt[0]
+            
+        else:
+            result = str(winner)
+        
+        
+        print("                            ######################################       ")
+        print("                            #                                    #       ")
+        print(f"                            #   WINNER ?    > its {result} !! <      #       ")
+        print("                            #                                    #       ")
+        print("                            ######################################       ")
+
+        
+        replay()
+    
+    
+if __name__ == "__main__" :
+    main()
+
+
+
+                                                # <<<< End of code >>>>
+
+## import winsound 
+from sys import exit, platform
+import time 
+import os
+from time import sleep
+
+
+'''
+    ,******************************************************************************************************************************,
+    *    This is a code in python for my own version of The tic tac toe game.The object of Tic Tac Toe is to get three in a row.    *
+    *  You play on a three by three game board.                                                                                     *
+    *  The first player is known as X and the second is O.                                                                          *
+    *  Players alternate placing Xs and Os on the game board  until either oppent has three in a row                                *
+    *  or all nine squares are filled.                                                                                              *
+    *  X always goes first,and in the event that no one has three in a row, the stalemate is called a cat game."""                  *
+      ******************************************************************************************************************************
+      
+'''
+
+
+                                            # <<<< start of code >>>>
+
+# variable to keep track if the game still ongoing
+game_on = True
+
+# variable for checking if players already selected the symbole to play with
+player_selected = False
+
+# a diictionary to put 'X' & 'O' in to show on the board
+a = {1:' ',2:' ',3:' ',4:' ',5:' ',6:' ',7:' ',8:' ',9:' '}
+
+winner = ''
+
+#  designing animation function
+################################
+
+''' goes here later '''
+
+
+###############################
+
+
+#I nitializer function:
+def initializer():
+    
+    global player_selected
+    global a
+    # to use native use linux os or win beep sound separately:
+    beeper = platform_checker()
+    global used_cell_numbers
+    global game_on
+    a = a.fromkeys(a,' ')
+    
+    game_on = True
+    player_selected = False
+    used_cell_numbers *= 0
+    clear()
+
+    
+    
+def platform_checker():
+    if platform == 'linux' or platform == 'linux2':
+        #os is linux
+        return 1
+
+    elif platform == 'darwin':
+        #platform is os x
+        return 2
+    
+    elif platform == 'win32':
+        # platform is windows
+        return 3
+         
+    
+
+  
+    
+# using windows / OS soundsto build bgm functions:
+#######################
+
+def oppen_bgm():
+    winsound.Beep(390, 899) # frequency, duration
+    winsound.Beep(230, 122)
+    time.sleep(.20)       # in seconds (0.25 is 250ms)
+    winsound.Beep(260, 150)
+    time.sleep(0.25)
+    winsound.Beep(400, 150)
+    time.sleep(0.25)
+    winsound.Beep(600, 150)
+    time.sleep(0.25)
+    winsound.Beep(440, 150)
+    time.sleep(0.25)
+    winsound.Beep(600, 1220)
+
+def end_bgm():
+    winsound.Beep(240, 220)
+    time.sleep(0.15)
+    winsound.Beep(300, 330)
+    time.sleep(0.15)
+    winsound.Beep(240, 590)
+    winsound.Beep(240, 190)
+    winsound.Beep(240, 190)
+    winsound.Beep(200, 1000)
+    winsound.Beep(300, 330)
+
+def win_os_beep():
+    winsound.Beep(533, 300)
+    time.sleep(0.00000000000001)
+    winsound.Beep(522, 400)
+
+# linux beeping function 
+def linux_beep():
+    print("\a")
+
+
+
+# Game's UI 
+
+def disp():
+    
+    print('          \n')
+    print('                        *********  Tic Tac Toe  ********     ')
+    print('          ')
+   
+    print('                        ----------- ----------- -----------     ')
+    print(f'                      #           #           #           #    ')
+    print(f'                      #      {a[7]}    #      {a[8]}    #     {a[9]}     #    ')
+    print(f'                      #           #           #           #    ')
+    print('                       ----------- ----------- -----------      ')
+    print(f'                      #           #           #           #    ')
+    print(f'                      #      {a[4]}    #      {a[5]}    #      {a[6]}    #    ')
+    print(f'                      #           #           #           #    ')
+    print('                       ----------- ----------- -----------      ')
+    print(f'                      #           #           #           #    ')
+    print(f'                      #      {a[1]}    #      {a[2]}    #      {a[3]}    #    ')
+    print(f'                      #           #           #           #    ')
+    print('                       ----------- ----------- -----------      ')
+    print('          \n')    
+    print('  ###################### Crazy Games All right reserved ######################     ')
+    print('          \n')
+    print('           \n     ')
+  
+
+
+
+  
+ #  here goes game logic code       #
+####################################    
+    
+def winner_checker():
+    
+    global used_cell_numbers
+    global winner
+    global game_on
+    
+    
+    # check for all cases when player wins:
+    for k in ('O','X'):
+        if (
+            ( a[1] == a[2] == a[3] == k ) or \
+            ( a[4] == a[5] == a[6] == k ) or \
+            ( a[7] == a[8] == a[9] == k ) or \
+            ( a[1] == a[5] == a[9] == k ) or \
+            ( a[7] == a[5] == a[3] == k ) or \
+            ( a[2] == a[5] == a[8] == k ) or \
+            ( a[1] == a[4] == a[7] == k ) or \
+            ( a[3] == a[6] == a[9] == k )
+        ) :
+            # condition is true and the game then ends:
+            
+            print('     _____________________________________________________________________________________________________\n\n')
+            print('                                                  Game Over\n')
+            print('     ____________________________________________________________________________________________________\n')
+            game_on = False
+            winner = k     
+      
+        elif len (used_cell_numbers) == 8:
+            game_on = False
+            winner = 'Tie'   
+    
+
+def cell_num():
+      
+    while True:
+    
+#       beep()
+        
+        choice = input("    choose cell's number:\n\n          -------\n          "
+                           "|7|8|9|\n          -------\n          |4|5|6|\n          "
+                            "-------\n          |1|2|3|\n          -------\n\n\n:")
+
+        while choice.isdigit() :
+            
+            choice = int(choice)
+            if choice in range(1,10):
+                return choice
+                break
+                          
+            else:
+                print('                ----------- ----------- ----------------------------      ')
+                print("                Oops ! wrong number! need glaces ? okay try agin !!")
+                print('                ---*-----------*-----------*-----------*------------      ')
+                return 'ExeptionError 1'
+                beep()
+                continue
+
+        else:
+#             beep()
+            print("Please enter only numbers...\n,"
+                  "don't play The smart!! ")
+            #clearing screen function maybe here
+            return 'ExeptionError 2'
+            break
+            
+            
+            
+
+def player_select():
+   
+    while 1:
+    
+        turn = {'player1':'','player2':''}
+        # first time UI prompt
+        print('                ----------- ----------- ---------------------------- \n\n     ')
+        print(" Let's Play!\n\n"
+                      "               choose 'O' for: PLAYER I or 'X' for: PLAYER II: \n\n")
+
+        print("    ######################################            ######################################   ")
+        print("    #       X :   PLAYER I                #           #         O :    PLAYER II           #   ")
+        print("    ######################################            ######################################   ")
+
+        selection = (input("")).upper()
+               
+        if selection == 'O':
+            turn.update({'player1' : selection, 'player2' : 'X'})
+            return turn
+            break
+
+        elif selection == 'X':
+            turn.update({'player1' : selection, 'player2' : 'O'})
+            return turn
+            break
+
+        else:
+#             beep()
+            print("    \n\n\n" 
+                  "     **\n"
+                  "      Only O or X is accepted, let's try again !\n"
+                  "           -    -\n"
+                  "    \n  ") 
+        
+
+
+# defining function to clear screen:
+clear = lambda:os.system('cls')
+
+
+
+# declaring a  list to check for used cell numbers
+used_cell_numbers = []
+
+
+def replay():
+    
+    print('\n\n                *=================       The GAME is OVER        ======================*        \n\n\n\n') 
+    
+
+    
+    print("  ######################################                 ######################################   ")
+    print("  #                                    #                 #                                    #   ")
+    print("  #     Y/yes :   Play Again !!        #                 #     N/ No :   Maybe Later .        #   ")
+    print("  #                                    #                 #                                    #   ")
+    print("  ######################################                 ######################################   ")
+
+
+    print('\n\n\n                   *========================*********=========================*        ')         
+    print('          \n')    
+    print('            ###################### Crazy Games All right reserved ######################     ')
+    print('          ')
+    print('                           ********* Coded By HAKIM S.D  ********     ')
+    
+       
+    while 1:
+        
+        u_responce = (input( "play again?: ")).upper()
+        
+        if u_responce in ('Y','YES'):
+            main()
+            break
+            
+        elif u_responce in ('N','NO'):
+            print('                ----------- ----------- ----------------------------  \n\n    ')
+            print(" ............................SEE YOU LATER THEN !!")
+            print('                ----------- ----------- ---------------------------- \n\n     ')
+            break
+            
+        else:
+            print(" sorry i don't hear you ?? say it again : ")
+            continue
+
+            
+
+# Main function:
+
+def main():
+    
+    # starting the game   
+    oppen_bgm()
+    initializer()
+    sfx = platform_checker()
+    p = player_select()
+    cycle_counter = 0
+           
+    def cycler():
+        global plays_counter
+        global cycle_counter
+        c = cell_num()
+        
+        while True:
+
+            if c in used_cell_numbers:
+                # print(f'cell number is {c}')
+                print('                ----------- ----------- ----------------------------      ')
+                print("                   Cell already token !! choose another number .")
+                print('                ----------- ----------- ----------------------------      ')
+                break
+
+            else:
+                used_cell_numbers.append(c)
+                plays_counter+= 1
+                break
+
+                
+                #print(f'cell number is {c}')
+                break
+
+                
+        # switching turn for player 1 & 2:
+        
+        while cycle_counter == 1:
+            
+            print(" ...........................\n")
+            print("player 1's turn! \n ")
+            print(" ...........................\n")
+            a[c] = p['player1']
+            cycle_counter = 0
+            break
+
+        else:
+            
+            print("player 2 's turn!")
+            a[c] = p['player2']
+            cycle_counter = 1
+    
+    
+
+    # switching beeper for os:
+    if sfx == 3:
+        beep =  win_os_beep()
+        
+    elif sfx == 1:
+        beep = linux_beep()
+   
+
+   # checking for game's winner:    
+    while game_on:
+        
+        cycler()   
+        disp()
+        winner_checker()
+        
+    else:
+       # declaring the winner
+        end_bgm()
+        
+        if winner in('O', "X") :
+            raw_rslt  = list( player for player in p if p[player] ==  winner)
+            result = raw_rslt[0]
+            
+        else:
+            result = str(winner)
+        
+        
+        print("                            ######################################       ")
+        print("                            #                                    #       ")
+        print(f"                            #   WINNER ?    > its {result} !! <      #       ")
+        print("                            #                                    #       ")
+        print("                            ######################################       ")
+
+        
+        replay()
+    
+    
+if __name__ == "__main__" :
+    main()
+
+
+
+                                                # <<<< End of code >>>>
+
